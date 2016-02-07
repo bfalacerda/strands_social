@@ -2,8 +2,8 @@
 Changelog for package social_card_reader
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.16 (2016-02-07)
+-------------------
 * Merge pull request `#47 <https://github.com/strands-project/strands_social/issues/47>`_ from gestom/hydro-devel
   Social card reader parameters reconfigurable.
 * Social card reader parameters reconfigurable.
