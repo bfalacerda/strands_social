@@ -2,6 +2,11 @@
 Changelog for package image_branding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* added missing install targets
+* Contributors: Jailander
+
 0.0.15 (2015-05-22)
 -------------------
 
