@@ -1,4 +1,4 @@
-$def with (topic,  other_button)
+$def with (topic,  other_button, image_host)
 <!DOCTYPE html>
 <html>
 <head>
@@ -218,7 +218,7 @@ ros.on('close', function() {
     <br/>
     <div class="row">
       <div class="col-sm-1"></div>
-      <div class="col-sm-7"><img id="imageStream" class="center-block img-thumbnail" src="http://localhost:8080/stream?topic=$:topic"/></div> 
+      <div class="col-sm-7"><img id="imageStream" class="center-block img-thumbnail" src="http://$:image_host:8080/stream?topic=$:topic"/></div> 
       <div class="col-sm-3">
         <dl class="dl-horizontal">
 
