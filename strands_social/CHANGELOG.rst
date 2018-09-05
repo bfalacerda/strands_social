@@ -2,8 +2,8 @@
 Changelog for package strands_social
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.0 (2018-09-05)
+------------------
 * Merge pull request `#51 <https://github.com/strands-project/strands_social/issues/51>`_ from Jailander/hydro-devel
   Removing datamatrix read package
 * removing deprecated dependency
