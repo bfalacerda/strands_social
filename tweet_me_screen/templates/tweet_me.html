@@ -107,7 +107,7 @@ $def with (topic, headline, sayings, other_button, image_host)
       $$('#tweetButton').removeClass('disabled');      
     });
 
-    var countdown_div = $$('<div />').appendTo('body');
+    var countdown_div = $$('<div />').prependTo('body');
     countdown_div.attr('style',"z-index: 1000;\
  font-size: 80vh;\
  margin: auto;\
