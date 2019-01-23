@@ -107,11 +107,35 @@ $def with (topic, headline, sayings, other_button, image_host)
       $$('#tweetButton').removeClass('disabled');      
     });
 
-    goal.send();
-    // switch to image snapshot and disable button
-    $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
-    $$('#tweetButton').addClass('disabled');
-  camGoal.send();
+    var countdown_div = $('<div />').appendTo('body');
+    countdown_div.attr('style',"z-index: 1000;\
+    font-size: 80vh;\
+    margin: auto;\
+    width: 100%;\
+    position: absolute;\
+    align-items: center;\
+    justify-content: center;\
+    display: flex;\
+    height: 100vh;\
+    color: #1a1ab1;");
+
+    var count_from = 3;
+    countdown_div.text((count_from).toString());
+    var i;
+    for(i=1; i < count_from; i++){
+      setTimeout(function() { countdown_div.text((count_from-i).toString());}, i*1000);
+    }
+
+    setTimeout(function() {
+      goal.send();
+      // switch to image snapshot and disable button
+      $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
+      camGoal.send();
+      countdown_div.remove();
+    }
+    , count_from * 1000);
+    //disable button
+    $('#tweetButton').addClass('disabled');
   }
   </script>
 
