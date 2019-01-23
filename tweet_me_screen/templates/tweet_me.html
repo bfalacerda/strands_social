@@ -1,4 +1,4 @@
-$def with (topic, headline, sayings, other_button)
+$def with (topic, headline, sayings, other_button, image_host)
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +61,7 @@ $def with (topic, headline, sayings, other_button)
     var request = new ROSLIB.ServiceRequest({});
  
     // hardcode for now
-    toDisplay = 'http://localhost:8090/';
+    toDisplay = 'http://$:image_host:8090/';
 
     var request = new ROSLIB.ServiceRequest({
       display_number : 0,
@@ -78,10 +78,13 @@ $def with (topic, headline, sayings, other_button)
 
   function tweetPicture() {
 
+  //configure via the generator script
+  var sayings=$:sayings;
+  
     var goal = new ROSLIB.Goal({
       actionClient : twitterClient,
       goalMessage : {
-        text : 'Look who I just met...',
+        text : sayings[Math.floor(Math.random() * sayings.length)],
         force : false,
         topic : '$:topic'
       }
@@ -92,7 +95,6 @@ $def with (topic, headline, sayings, other_button)
       goalMessage : {}
     });
 
-  
 
     goal.on('feedback', function(feedback) {
       console.log('Feedback: ' + feedback);
@@ -101,13 +103,13 @@ $def with (topic, headline, sayings, other_button)
     goal.on('result', function(result) {
       console.log('Final Result: ' + result);
       // renable image stream and tweet button
-      $$('#imageStream').attr("src","http://localhost:8080/stream?topic=$:topic");
+      $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");
       $$('#tweetButton').removeClass('disabled');      
     });
 
     goal.send();
     // switch to image snapshot and disable button
-    $$('#imageStream').attr("src","http://localhost:8080/snapshot?topic=$:topic");
+    $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
     $$('#tweetButton').addClass('disabled');
   camGoal.send();
   }
@@ -124,7 +126,7 @@ $def with (topic, headline, sayings, other_button)
     <br/>
     <div class="row">
       <div class="col-sm-1"></div>
-      <div class="col-sm-10"><img id="imageStream" class="center-block img-thumbnail" src="http://localhost:8080/stream?topic=$:topic"/></div> 
+      <div class="col-sm-10"><img id="imageStream" class="center-block img-thumbnail" src="http://$:image_host:8080/stream?topic=$:topic"/></div> 
       <div class="col-sm-1"></div>      
     </div>
     <br/>
