@@ -123,7 +123,7 @@ $def with (topic, headline, sayings, other_button, image_host)
     countdown_div.text((count_from).toString());
     var i;
     for(i=1; i < count_from; i++){
-      setTimeout(function() { countdown_div.text((count_from-i).toString());}, i*1000);
+      setTimeout(function(value) { countdown_div.text(value);}, i*1000, (count_from-i).toString());
     }
 
     setTimeout(function() {
