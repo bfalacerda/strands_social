@@ -103,8 +103,7 @@ $def with (topic, headline, sayings, other_button, image_host)
     goal.on('result', function(result) {
       console.log('Final Result: ' + result);
       // renable image stream and tweet button
-      $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");
-      $$('#tweetButton').removeClass('disabled');      
+      $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");      
     });
 
     var countdown_div = $$('<div />').prependTo('body');
@@ -136,6 +135,10 @@ $def with (topic, headline, sayings, other_button, image_host)
     , count_from * 1000);
     //disable button
     $$('#tweetButton').addClass('disabled');
+    setTimeout(function() {
+      $$('#tweetButton').removeClass('disabled');
+    }
+    , (count_from + 1) * 1000);
   }
   </script>
 
