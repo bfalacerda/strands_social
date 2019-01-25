@@ -106,7 +106,7 @@ $def with (topic, headline, sayings, other_button, image_host)
 
     var countdown_div = $$('<div />').prependTo('body');
     countdown_div.attr('style',"z-index: 1000;\
- font-size: 80vh;\
+ font-size: 30vh;\
  margin: auto;\
  width: 100%;\
  position: absolute;\
@@ -116,29 +116,62 @@ $def with (topic, headline, sayings, other_button, image_host)
  height: 100vh;\
  color: #1a1ab1;");
 
-    var count_from = 3;
-    countdown_div.text((count_from).toString());
-    var i;
-    for(i=1; i < count_from; i++){
-      setTimeout(function(value) { countdown_div.text(value);}, i*1000, (count_from-i).toString());
+    var j;
+    for(j=0;j<6;j++){
+      setTimeout(function(value) {
+      switch(value){
+        case 0:
+          countdown_div.text("LOOK");
+          break;
+        case 1:
+          countdown_div.text("AT");
+          break;
+        case 2:
+          countdown_div.text("THE");
+          break;
+        case 3:
+          countdown_div.text("CAMERA");
+          break;
+        case 4:
+          countdown_div.text("⬆");
+          break;
+        case 5:
+        countdown_div.attr('style',"z-index: 1000;\
+font-size: 100vh;\
+margin: auto;\
+width: 100%;\
+position: absolute;\
+align-items: center;\
+justify-content: center;\
+display: flex;\
+height: 100vh;\
+color: #1a1ab1;");
+        var count_from = 3;
+        var i;
+          countdown_div.text((count_from).toString());
+          for(i=1; i < count_from; i++){
+            setTimeout(function(value) { countdown_div.text(value);}, i*1000, (count_from-i).toString());
+          }
+          setTimeout(function() {
+            goal.send();
+            // switch to image snapshot and disable button
+            $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
+            camGoal.send();
+            countdown_div.remove();
+          }
+          , count_from * 1000);
+          //disable button
+          $$('#tweetButton').addClass('disabled');
+          setTimeout(function() {
+            // renable image stream and tweet button
+            $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");  
+            $$('#tweetButton').removeClass('disabled');
+          }
+          , (count_from + 1) * 1000);
+          i=5;
+        }
+      }, j*1000, j);
     }
-
-    setTimeout(function() {
-      goal.send();
-      // switch to image snapshot and disable button
-      $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
-      camGoal.send();
-      countdown_div.remove();
-    }
-    , count_from * 1000);
-    //disable button
-    $$('#tweetButton').addClass('disabled');
-    setTimeout(function() {
-      // renable image stream and tweet button
-      $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");  
-      $$('#tweetButton').removeClass('disabled');
-    }
-    , (count_from + 1) * 1000);
   }
   </script>
 
