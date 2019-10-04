@@ -60,7 +60,6 @@ $def with (topic, headline, sayings, other_button, image_host)
 
     var request = new ROSLIB.ServiceRequest({});
  
-    // hardcode for now
     toDisplay = 'http://$:image_host:8090/';
 
     var request = new ROSLIB.ServiceRequest({
@@ -75,6 +74,12 @@ $def with (topic, headline, sayings, other_button, image_host)
         + result.success);
   });
   }
+
+  function cancelTweet() {
+    twitterClient.cancel();
+    displayRelativePage('index.html');
+  }
+
 
   function tweetPicture() {
 
