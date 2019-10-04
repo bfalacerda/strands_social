@@ -1,4 +1,4 @@
-$def with (topic, headline, sayings, other_button)
+$def with (topic, headline, sayings, other_button, image_host)
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +61,7 @@ $def with (topic, headline, sayings, other_button)
     var request = new ROSLIB.ServiceRequest({});
  
     // hardcode for now
-    toDisplay = 'http://localhost:8090/';
+    toDisplay = 'http://$:image_host:8090/';
 
     var request = new ROSLIB.ServiceRequest({
       display_number : 0,
@@ -78,10 +78,13 @@ $def with (topic, headline, sayings, other_button)
 
   function tweetPicture() {
 
+  //configure via the generator script
+  var sayings=$:sayings;
+  
     var goal = new ROSLIB.Goal({
       actionClient : twitterClient,
       goalMessage : {
-        text : 'Look who I just met...',
+        text : sayings[Math.floor(Math.random() * sayings.length)],
         force : false,
         topic : '$:topic'
       }
@@ -92,24 +95,83 @@ $def with (topic, headline, sayings, other_button)
       goalMessage : {}
     });
 
-  
 
     goal.on('feedback', function(feedback) {
       console.log('Feedback: ' + feedback);
     });
 
     goal.on('result', function(result) {
-      console.log('Final Result: ' + result);
-      // renable image stream and tweet button
-      $$('#imageStream').attr("src","http://localhost:8080/stream?topic=$:topic");
-      $$('#tweetButton').removeClass('disabled');      
+      console.log('Final Result: ' + result);    
     });
 
-    goal.send();
-    // switch to image snapshot and disable button
-    $$('#imageStream').attr("src","http://localhost:8080/snapshot?topic=$:topic");
-    $$('#tweetButton').addClass('disabled');
-  camGoal.send();
+    var countdown_div = $$('<div />').prependTo('body');
+    countdown_div.attr('style',"z-index: 1000;\
+ font-size: 30vh;\
+ margin: auto;\
+ width: 100%;\
+ position: absolute;\
+ align-items: center;\
+ justify-content: center;\
+ display: flex;\
+ height: 100vh;\
+ color: #1a1ab1;");
+
+    var j;
+    for(j=0;j<6;j++){
+      setTimeout(function(value) {
+      switch(value){
+        case 0:
+          countdown_div.text("LOOK");
+          break;
+        case 1:
+          countdown_div.text("AT");
+          break;
+        case 2:
+          countdown_div.text("THE");
+          break;
+        case 3:
+          countdown_div.text("CAMERA");
+          break;
+        case 4:
+          countdown_div.text("⬆");
+          break;
+        case 5:
+        countdown_div.attr('style',"z-index: 1000;\
+font-size: 100vh;\
+margin: auto;\
+width: 100%;\
+position: absolute;\
+align-items: center;\
+justify-content: center;\
+display: flex;\
+height: 100vh;\
+color: #1a1ab1;");
+        var count_from = 3;
+        var i;
+          countdown_div.text((count_from).toString());
+          for(i=1; i < count_from; i++){
+            setTimeout(function(value) { countdown_div.text(value);}, i*1000, (count_from-i).toString());
+          }
+          setTimeout(function() {
+            goal.send();
+            // switch to image snapshot and disable button
+            $$('#imageStream').attr("src","http://$:image_host:8080/snapshot?topic=$:topic");
+            camGoal.send();
+            countdown_div.remove();
+          }
+          , count_from * 1000);
+          //disable button
+          $$('#tweetButton').addClass('disabled');
+          setTimeout(function() {
+            // renable image stream and tweet button
+            $$('#imageStream').attr("src","http://$:image_host:8080/stream?topic=$:topic");  
+            $$('#tweetButton').removeClass('disabled');
+          }
+          , (count_from + 1) * 1000);
+          i=5;
+        }
+      }, j*1000, j);
+    }
   }
   </script>
 
@@ -124,7 +186,7 @@ $def with (topic, headline, sayings, other_button)
     <br/>
     <div class="row">
       <div class="col-sm-1"></div>
-      <div class="col-sm-10"><img id="imageStream" class="center-block img-thumbnail" src="http://localhost:8080/stream?topic=$:topic"/></div> 
+      <div class="col-sm-10"><img id="imageStream" class="center-block img-thumbnail" src="http://$:image_host:8080/stream?topic=$:topic"/></div> 
       <div class="col-sm-1"></div>      
     </div>
     <br/>
